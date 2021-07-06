@@ -52,6 +52,7 @@
                 <input type="text" readonly
                  class="form-control"  
                 value="{{ $post->updated_at }}"
+                {{-- error? --}}
                 >
             </div>  
             <div class="form-group">
