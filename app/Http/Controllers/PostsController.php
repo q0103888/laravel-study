@@ -98,12 +98,12 @@ class PostsController extends Controller
             return $fileName;
     }
 
-    public function edit(Post $post) {
+    public function edit(Request $request, Post $post) {
         //$post = Post::find($id);
         //$post = Post::where('id',$id)->first();
         //dd($post);
         // 수정 폼 생성
-        return view('posts.edit')->with('post',$post);
+        return view('posts.edit', ['post' => $post, 'page'=> $request->page]);
     }
  
     public function update(Request $request, $id) {
@@ -116,6 +116,16 @@ class PostsController extends Controller
 
         $post = Post::find($id);
         // 이미지 파일 수정, 파일시스템에서 
+
+        // Authorization 즉 수정 권한이 있는지 검사
+        // 즉, 로그인한 사용자와 게시글의 작성자가 같은지 체크
+        // if(auth()->user()->id != $post->user_id) {
+        //     abort(403);
+        // }
+
+        if($request->user()->cannot('update', $post)) {
+            abort(403);
+        }
 
         if($request->file('imageFile')) {
            $imagePath = 'public/images/'.$post->image;
@@ -132,8 +142,19 @@ class PostsController extends Controller
 
     }
 
-    public function destroy($id) {
+    public function destroy(Request $request, $id) {
         // 파일 시스템에서 이미지 파일 삭제
         //게시글을 데이터베이스에서 삭제 
+        $post = Post::findOrFail($id);
+        $page = $request->page;
+        if($post->image) {
+            $imagePath = 'public/images/'.$post->image;
+            Storage::delete($imagePath);
+        }
+        $post->delete();
+
+        return redirect()->route('posts.index', ['page'=>$page]);
+        
+        
     }
 }

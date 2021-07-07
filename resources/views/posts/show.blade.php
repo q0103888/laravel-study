@@ -43,8 +43,7 @@
             <div class="form-group">
                 <label>등록일</label>
                 <input type="text" readonly
-                 class="form-control"  
-                value="{{ $post->created_at->diffForHumans() }}"
+                 class="form-control" value="{{ $post->created_at->diffForHumans() }}"  
                 >
             </div>       
             <div class="form-group">
@@ -52,7 +51,6 @@
                 <input type="text" readonly
                  class="form-control"  
                 value="{{ $post->updated_at }}"
-                {{-- error? --}}
                 >
             </div>  
             <div class="form-group">
@@ -62,12 +60,27 @@
                 value="{{ $post->user_id }}"
                 >
             </div> 
+            @auth
+                {{-- @if (auth()->user()->id == $post->user_id) --}}
+                @can('update', $post)
             <div class="flex">
+                <div>
                 <a class="btn btn-warning"
-                    href="{{ route('post.edit', ['post'=>$post->id]) }}">수정</a>
-                <a class="btn btn-danger"
-                    href="{{ route('post.delete', ['id'=>$post->id]) }}">삭제</a>
+                    href="{{ route('post.edit', ['post'=>$post->id]) }}">수정</a>   
+                </div>
+                <div>   
+                <form action="{{ route('post.delete', ['id'=>$post->id, 'page'=>$page]) }}" method="post">
+                    @csrf
+                    @method("delete")
+                    <button  class="btn btn-danger">
+                        삭제
+                    </button>
+                </form>
+                </div>
             </div>
+            @endcan
+            {{-- @endif --}}
+        @endauth
     </div>
 </body>
 </html>

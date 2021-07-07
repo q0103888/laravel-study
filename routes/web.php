@@ -56,4 +56,5 @@ Route::get('/posts/show/{id}', [PostsController::class, 'show'])->name('post.sho
 
 Route::get('/posts/{post}', [PostsController::class, 'edit'])->name('post.edit');
 Route::put('/posts/{id}', [PostsController::class, 'update'])->name('post.update');
-Route::delete('/posts/{id}', [PostsController::class, 'distroy'])->name('post.delete');
+Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('post.delete');
+
