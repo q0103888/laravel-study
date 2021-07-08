@@ -103,7 +103,7 @@ class PostsController extends Controller
         //$post = Post::where('id',$id)->first();
         //dd($post);
         // 수정 폼 생성
-        return view('posts.edit', ['post' => $post, 'page'=> $request->page]);
+        return view('posts.edit', ['post'=>$post, 'page'=>$request->page]);
     }
  
     public function update(Request $request, $id) {
@@ -138,7 +138,7 @@ class PostsController extends Controller
         $post->content=$request->content;
         $post->save();
 
-        return redirect() ->route('post.show', ['id'=>$id]);
+        return redirect() ->route('post.show', ['id'=>$id, 'page'=>$request->page]);
 
     }
 
@@ -146,6 +146,11 @@ class PostsController extends Controller
         // 파일 시스템에서 이미지 파일 삭제
         //게시글을 데이터베이스에서 삭제 
         $post = Post::findOrFail($id);
+
+        if($request->user()->cannot('delete',$post)) {
+            abort(403);
+        }
+
         $page = $request->page;
         if($post->image) {
             $imagePath = 'public/images/'.$post->image;
@@ -156,5 +161,10 @@ class PostsController extends Controller
         return redirect()->route('posts.index', ['page'=>$page]);
         
         
+    }
+
+    public function myposts() {
+        $posts = auth()->user()->posts()->latest()->paginate(5);
+        return view('posts.index', compact('posts'));
     }
 }

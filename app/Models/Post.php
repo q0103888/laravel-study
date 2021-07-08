@@ -17,4 +17,8 @@ class Post extends Model
         $imageFile = $this -> image ?? 'no_image_available.png';
         return $path.$imageFile;
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
