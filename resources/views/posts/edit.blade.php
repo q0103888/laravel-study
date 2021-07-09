@@ -12,19 +12,19 @@
 </head>
 <body>
     <div class="container">
-        <form action="{{ route('post.update', ['id'=>$post->id, 'page'=>$page]) }}"
-             method="post"
-             enctype="multipart/form-data">    
+        <form action="{{ route('post.update', ['id'=>$post->id, 'page'=>$page]) }}" 
+                method="post"
+                enctype="multipart/form-data">    
             @csrf
-            @method("put")
+            @method("put")            
 
             {{-- method spoofing --}}
-            {{--<input type="hidden" name="_method" value="put">--}}
+            {{-- <input type="hidden" name="_method" value="put"> --}}
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" 
                 name="title" class="form-control" id="title" 
-                value="{{ old('title') ? old('title') : $post->title}}"
+                value="{{ old('title') ? old('title') : $post->title }}"
                 >
 
                 @error('title')
@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label for="content">Content</label>
                 <textarea class="form-control"  name="content"
-                    id="content">{{ old('content') ? old('content') : $post->content}}</textarea>
+                    id="content">{{ old('content') ? old('content') : $post->content }}</textarea>
 
                 @error('content')
                     <div>{{ $message }}</div>
@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <img class="img-thumbnail" width="20%"
-                    src="{{$post->imagePath()}}">
+                    src="{{ $post->imagePath()  }}">
             </div>
             <div class="form-group">
                 <label for="file">File</label>

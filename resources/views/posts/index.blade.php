@@ -33,7 +33,9 @@
                 content: {{ $post->content }}
                 </div> --}}
                 {{-- <span>written on {{ $post->created_at }}</span> --}}
-                <span>written on {{ $post->created_at->diffForHumans() }}</span>
+                <span>written on {{ $post->created_at->diffForHumans() }}
+                        {{ $post->count }} {{ $post->count > 0 ? Str::plural('view', $post->count) : 'view' }}
+                </span>
                 <hr>
             </li>
             @endforeach
