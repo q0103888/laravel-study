@@ -19,8 +19,17 @@ class PostsController extends Controller
         // dd($reqeust->page);
         $page = $request->page;
         $post = Post::find($id);
-        $post->count++; //조회수 증가시킴
-        $post->save();  //DB에 반영
+        //$post->count++; //조회수 증가시킴
+        //$post->save();  //DB에 반영
+        /*
+        이 글을 조회한 사용자들 중에, 현재
+        로그인한 사용자가 포함되어 있는지를 체크하고
+        포함되어 있지 않으면 추가
+        포함되어 있으면 다음 단계로 넘어감
+        */
+        if (Auth::user() != null && !$post->viewers->contains(Auth::user())) {
+            $post->viewers()->attach(Auth::user()->id);
+        }
 
 
         return view('posts.show', 
@@ -142,7 +151,7 @@ class PostsController extends Controller
         $post->save();
 
         return redirect() ->route('post.show', ['id'=>$id, 'page'=>$request->page]);
-
+         
     }
 
     public function destroy(Request $request, $id) {
@@ -160,7 +169,7 @@ class PostsController extends Controller
             Storage::delete($imagePath);
         }
         $post->delete();
-
+        
         return redirect()->route('posts.index', ['page'=>$page]);
         
         
