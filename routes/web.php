@@ -46,7 +46,7 @@ Route::get('/test3', function() {
 Route::get('/test4', [TestController::class, 'index']);
 
 
-Route::get('/posts/create', [PostsController::class, 'create'])/*->middleware(['auth'])*/;
+Route::get('/posts/create', [PostsController::class, 'create'])/*->middleware(['auth'])*/->name('posts.create');
 Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store')/*->middleware(['auth'])*/;
 Route::get('/posts/index', [PostsController::class, 'index'])->name('posts.index');
 Route::get('/posts/show/{id}', [PostsController::class, 'show'])->name('post.show');
