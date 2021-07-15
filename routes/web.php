@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,3 +56,4 @@ Route::get('/posts/{id}', [PostsController::class, 'edit'])->name('post.edit');
 Route::put('/posts/{id}', [PostsController::class, 'update'])->name('post.update');
 Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('post.delete');
 
+Route::get('/chart/index',[ChartController::class, 'index']);
